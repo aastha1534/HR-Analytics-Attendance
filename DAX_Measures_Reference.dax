@@ -1,0 +1,70 @@
+// =========================================================================
+// Power BI — DAX measures (reference / extension set)
+// The shipped report (HR-Analytics-Atliq.pbix) already has its measures
+// built in — this file documents equivalent measures against the cleaned
+// attendance_monthly / attendance_daily tables, useful if you rebuild the
+// model, add a new month, or extend the report.
+// =========================================================================
+
+Total Employees =
+DISTINCTCOUNT(attendance_monthly[EmployeeCode])
+
+Avg Days Present =
+AVERAGE(attendance_monthly[Present])
+
+Avg WFH Days =
+AVERAGE(attendance_monthly[WorkFromHome])
+
+Total Paid Leave =
+SUM(attendance_monthly[PaidLeave])
+
+Total Sick Leave =
+SUM(attendance_monthly[SickLeave])
+
+Total Unpaid Leave (LWP) =
+SUM(attendance_monthly[LeaveWithoutPay])
+
+Total Leave (All Types) =
+SUM(attendance_monthly[PaidLeave]) + SUM(attendance_monthly[SickLeave]) +
+SUM(attendance_monthly[LeaveWithoutPay]) + SUM(attendance_monthly[BereavementLeave]) +
+SUM(attendance_monthly[BirthdayLeave]) + SUM(attendance_monthly[FloatingFestivalLeave]) +
+SUM(attendance_monthly[MenstrualLeave])
+
+WFH Rate % =
+DIVIDE(
+    SUM(attendance_monthly[WorkFromHome]),
+    SUM(attendance_monthly[WorkFromHome]) + SUM(attendance_monthly[Present]),
+    0
+)
+
+Attendance Rate % =
+// Present + WFH as a share of all logged working days (excludes weekly off/holiday)
+DIVIDE(
+    SUM(attendance_monthly[Present]) + SUM(attendance_monthly[WorkFromHome]),
+    SUM(attendance_monthly[Present]) + SUM(attendance_monthly[WorkFromHome]) +
+        [Total Leave (All Types)],
+    0
+)
+
+High Leave Flag =
+// Employees whose total leave this month is in the top quartile — useful
+// as a conditional-formatting measure on the employee table
+VAR ThisEmpLeave =
+    CALCULATE(
+        [Total Leave (All Types)],
+        ALLEXCEPT(attendance_monthly, attendance_monthly[EmployeeCode], attendance_monthly[Month])
+    )
+VAR Threshold =
+    PERCENTILEX.INC(ALL(attendance_monthly[EmployeeCode]), [Total Leave (All Types)], 0.75)
+RETURN
+    IF(ThisEmpLeave >= Threshold, "High", "Normal")
+
+Month over Month Present Change =
+VAR CurrentPresent = [Avg Days Present]
+VAR PreviousPresent =
+    CALCULATE(
+        [Avg Days Present],
+        DATEADD('Calendar'[Date], -1, MONTH)
+    )
+RETURN CurrentPresent - PreviousPresent
+// Requires a Calendar/date table if you extend beyond the 3 months shipped here.
