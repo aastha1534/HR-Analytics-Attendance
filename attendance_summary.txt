@@ -1,0 +1,24 @@
+HR ATTENDANCE ANALYSIS SUMMARY
+================================
+
+Employees tracked: 74
+Months covered: Apr 2022, May 2022, June 2022
+
+Top 5 leave-takers:
+  Kaylah Schultz (Atq -419): 17.0 days
+  Miley Combs (Atq -372): 16.0 days
+  Ayanna Atkins (Atq -452): 14.0 days
+  Trystan Ortega (Atq -349): 13.0 days
+  Ana Little (Atq -404): 12.0 days
+
+Top 5 WFH users:
+  Zaiden Wheeler (Atq -348): 100.0%
+  Makai Hardy (Atq -361): 100.0%
+  Alexander Davenport (Atq -350): 100.0%
+  Gustavo Ritter (Atq -382): 100.0%
+  Leslie Navarro (Atq -459): 100.0%
+
+Monthly average days present per employee:
+  Apr 2022: 17.8 present, 1.8 WFH
+  May 2022: 16.4 present, 2.0 WFH
+  June 2022: 10.4 present, 1.7 WFH
