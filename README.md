@@ -93,17 +93,14 @@ Attendance dropped over the quarter: average days present per
 employee fell from 17.8 (April) to 16.4 (May) to 10.4 (June).
 WFH held steady at roughly 1.7–2.0 days/employee/month across all
 three months.
+
 Leave is concentrated in a small group — the top 10 leave-takers
 account for a disproportionate share of total leave days.
+
 A handful of employees work from home almost exclusively.
 Leave requests cluster around certain weekdays — a pattern worth
 watching for approval-policy implications.
 Data quality note
-The source workbook links 24 employee codes to more than one name
-across different months (e.g. Atq-335 appears as both "Tori Shannon"
-and "Madelynn Gray"). This is preserved as-is throughout the project
-rather than silently merged, since it looks like a data-entry
-inconsistency worth a cleaning pass before this feeds a production
-HR system.
+
 
 
