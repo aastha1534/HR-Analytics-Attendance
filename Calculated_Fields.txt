@@ -1,0 +1,41 @@
+// =========================================================================
+// Tableau — Calculated Fields
+// How to use: Analysis -> Create Calculated Field -> paste name + formula
+// Data source: data/attendance_monthly.csv (connect via Text File)
+//              data/attendance_daily.csv   (for day-of-week / trend views)
+// =========================================================================
+
+// --- Total Leave (All Types) ---
+Total Leave
+[Paid Leave] + [Sick Leave] + [Leave Without Pay] + [Bereavement Leave] +
+[Birthday Leave] + [Floating Festival Leave] + [Menstrual Leave]
+
+// --- Days Worked (Present + WFH) ---
+Days Worked
+[Present] + [Work From Home]
+
+// --- WFH Rate % ---
+WFH Rate
+IIF([Days Worked] = 0, 0, [Work From Home] / [Days Worked])
+
+// --- Attendance Rate % ---
+Attendance Rate
+IIF(([Days Worked] + [Total Leave]) = 0, 0,
+    [Days Worked] / ([Days Worked] + [Total Leave]))
+
+// --- High Leave Flag (top quartile leave-takers) ---
+High Leave Flag
+IF [Total Leave] >= { FIXED : PERCENTILE([Total Leave], 0.75) }
+THEN "High" ELSE "Normal" END
+
+// --- Month Sort Order (for Apr/May/June ordering on axes) ---
+Month Sort Order
+CASE [Month]
+WHEN "Apr 2022" THEN 1
+WHEN "May 2022" THEN 2
+WHEN "June 2022" THEN 3
+END
+
+// --- Day of Week (for attendance_daily.csv sheets) ---
+Day Of Week
+DATENAME('weekday', [Date])
